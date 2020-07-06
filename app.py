@@ -15,6 +15,7 @@ app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(app.root_path, 'data.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = 'dev'
 
 db = SQLAlchemy(app)
 
@@ -107,11 +108,15 @@ def edit(movie_id):
 
 @app.route('/movie/delete/<int:movie_id>', methods=['POST'])
 def delete(movie_id):
-    movie = Movie.query.get_or_404(movie_id)
-    db.session.delete(movie)
-    db.session.commit()
+    movie = Movie.query.get_or_404(movie_id)  # 获取电影记录
+    db.session.delete(movie)  # 删除对应的记录
+    db.session.commit()  # 提交数据库会话
     flash('Item deleted.')
-    return redirect(url_for('index'))
+    return redirect(url_for('index'))  # 重定向回主页
+
+
+
+
 #
 # @app.route('/')
 # def hello():
