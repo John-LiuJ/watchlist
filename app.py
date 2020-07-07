@@ -5,7 +5,7 @@ from flask import Flask, render_template, request, flash, redirect
 from flask import url_for
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import LoginManager, UserMixin, login_user, login_required, current_user
+from flask_login import LoginManager, UserMixin, login_user, login_required, current_user, logout_user
 
 WIN = sys.platform.startswith('win')
 if WIN:  # 如果是 Windows 系统，使用三个斜线
@@ -69,7 +69,7 @@ def admin(username, password):
 
     user = User.query.first()
     if user is not None:
-        click.echo('Updating user')
+        click.echo('Updating user...')
         user.username = username
         user.set_password(password)
     else:
@@ -191,7 +191,7 @@ def login():
 @app.route('/logout')
 @login_required
 def logout():
-    login_user()
+    logout_user()
     flash('GoodBye')
     return redirect(url_for('index'))
 
