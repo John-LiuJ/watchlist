@@ -1,6 +1,11 @@
 import unittest
 
-from app import app, db, Movie, User, forge, initdb
+from watchlist import app, db
+from watchlist.commands import forge, initdb
+from watchlist.models import Movie, User
+
+
+
 
 
 class WatchlistTestCase(unittest.TestCase):
@@ -33,7 +38,7 @@ class WatchlistTestCase(unittest.TestCase):
     def test_404_page(self):
         response = self.client.get('/nothing')
         data = response.get_data(as_text=True)
-        self.assertIn('Page Not Found - 404 !', data)
+        self.assertIn('Page Not Found - 404', data)
         self.assertIn('Go Back', data)
         self.assertEqual(response.status_code, 404)
 
@@ -236,6 +241,7 @@ class WatchlistTestCase(unittest.TestCase):
         self.assertEqual(User.query.count(), 1)
         self.assertEqual(User.query.first().username, 'peter')
         self.assertTrue(User.query.first().validate_password('456'))
+
 
 if __name__ == '__main__':
     unittest.main()
